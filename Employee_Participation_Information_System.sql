@@ -1,6 +1,6 @@
 create table Department (
   Num_S int primary key,
-  Laber varchar(255),
+  Label varchar(255),
   Manager_Name varchar(255))
   
 create table Employee (
