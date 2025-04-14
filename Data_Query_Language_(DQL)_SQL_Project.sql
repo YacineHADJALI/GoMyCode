@@ -45,3 +45,27 @@ where products.quantity like '%jar%' and city = 'Berlin'
 group by customers.customer_code
 having count(order_details.product_ref) <= 1
 
+select customers.customer_code, company, phone, sum(quantity * unit_price) as total_amount, country
+from customers
+	join orders on customers.customer_code = orders.customer_code
+	join order_details on orders.order_int = order_details.order_int
+where year(order_date) = 1998 and month(order_date) = 4 and datename(dw, order_date) = 'Monday'
+group by customers.customer_code, company, phone, country, order_date
+
+select customers.customer_code, company, phone, count(distinct order_details.product_ref) as product_ordered
+from customers
+	join orders on customers.customer_code = orders.customer_code
+	join order_details on orders.order_int = order_details.order_int
+	join products on order_details.product_ref = products.product_ref
+group by customers.customer_code, company, phone
+having count(distinct order_details.product_ref) = count(products.product_ref)
+
+select customers.customer_code, count(order_int) as number_of_orders
+from customers join orders on customers.customer_code = orders.customer_code
+where country = 'france'
+group by customers.customer_code
+
+select
+  (select count(*) from orders where year(order_date) = 1996) as orders_in_1996,
+  (select count(*) from orders where year(order_date) = 1997) as orders_in_1997,
+  (select count(*) from orders where year(order_date) = 1997) - (select count(*) from orders where year(order_date) = 1996) as difference;
